@@ -33,4 +33,30 @@ describe("Testando o carrinho de compras", () => {
 
     expect(capturaErro).toThrowError("Carrinho de compras vazio");
   });
+
+  it("Deve adicionar o frete", () => {
+    const carrinho = new Carrinho();
+    const valor = 100;
+    carrinho.adicionaFrete(valor);
+
+    expect(carrinho.frete).toBe(valor);
+  });
+
+  it("Deve finalizar as compras", () => {
+    const valor = 2;
+    const quantidade = 1;
+    const frete = 5;
+    const somaDosValores = quantidade * valor;
+    const total = somaDosValores + frete;
+    const item = new Item("Banana", valor, quantidade);
+    const carrinho = new Carrinho();
+    carrinho.adiciona(item);
+    carrinho.adicionaFrete(frete);
+
+    expect(carrinho.finalizaCompra()).toStrictEqual({
+      subtotal: somaDosValores,
+      frete: frete,
+      total: total,
+    });
+  });
 });
