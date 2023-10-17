@@ -15,21 +15,24 @@ class Carrinho {
   }
 
   calculaTotal() {
-    this.subtotal = this.itens.reduce((acum, item) => acum + item.pegaValorTotalItem(), 0);
+    this.subtotal = this.itens.reduce(
+      (acum, item) => acum + item.pegaValorTotalItem(),
+      0
+    );
     return this.subtotal + this.frete;
   }
 
   finalizaCompra() {
     if (this.itens.length === 0) {
-      throw new Error('Carrinho de compras vazio');
+      throw new Error("Carrinho de compras vazio");
     }
 
     this.total = this.calculaTotal();
 
     return {
-      subtotal: this.subtotal,
-      frete: this.frete,
-      total: this.total,
+      subtotal: `R$ ${this.subtotal}`,
+      frete: `R$ ${this.frete}`,
+      total: `R$ ${this.total}`,
     };
   }
 }
