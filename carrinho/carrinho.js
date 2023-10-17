@@ -27,12 +27,13 @@ class Carrinho {
       throw new Error("Carrinho de compras vazio");
     }
 
+    //falso positivo
     this.total = this.calculaTotal();
 
     return {
-      subtotal: `R$ ${this.subtotal}`,
-      frete: `R$ ${this.frete}`,
-      total: `R$ ${this.total}`,
+      subtotal: this.subtotal,
+      frete: this.frete,
+      total: this.total,
     };
   }
 }
