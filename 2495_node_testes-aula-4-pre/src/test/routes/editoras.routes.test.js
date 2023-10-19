@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect } from "@jest/globals";
+import { afterEach, beforeEach, describe, expect, jest } from "@jest/globals";
 import request from "supertest";
 import app from "../../app.js";
 
@@ -38,16 +38,38 @@ describe("Cria uma editora em /editoras", () => {
 
     idResposta = resposta.body.content.id;
   });
-});
 
-describe("Deleta uma unica editora  em /editoras/id", () => {
-  it("Deve deletar uma editora", async () => {
-    await request(app).delete(`/editoras/${idResposta}}`).expect(200);
+  it("Deve não adicionar nada se o body for vazio", async () => {
+    await request(app).post("/editoras").send({}).expect(400);
   });
 });
 
 describe("Busca uma unica editora em /editoras/id", () => {
   it("Deve buscar uma unica editora", async () => {
     await request(app).get(`/editoras/${idResposta}`).expect(200);
+  });
+});
+
+describe("Altera algum campo dentro de editora em /editoras/id", () => {
+  test.each([
+    ["nome", { nome: "NomeTable" }],
+    ["cidade", { cidade: "SP" }],
+    ["email", { email: "Email@email.com" }],
+  ])(`Deve atualizar %s em editora`, async (chave, param) => {
+    const requisicao = { request };
+    const spy = jest.spyOn(requisicao, "request");
+    await requisicao
+      .request(app)
+      .put(`/editoras/${idResposta}`)
+      .send(param)
+      .expect(204);
+
+    expect(spy).toHaveBeenCalled();
+  });
+});
+
+describe("Deleta uma unica editora  em /editoras/id", () => {
+  it("Deve deletar uma editora", async () => {
+    await request(app).delete(`/editoras/${idResposta}}`).expect(200);
   });
 });
